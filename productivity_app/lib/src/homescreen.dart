@@ -1,9 +1,7 @@
-
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:productivity_app/src/signin_screen.dart';
 import 'package:productivity_app/widgets/button.dart';
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -32,9 +30,9 @@ class HomeScreen extends StatelessWidget {
                 },
                 text: "Log Out"),
             // for google sign in ouser detail
-            // Image.network("${FirebaseAuth.instance.currentUser!.photoURL}"),
-            // Text("${FirebaseAuth.instance.currentUser!.email}"),
-            // Text("${FirebaseAuth.instance.currentUser!.displayName}")
+            Image.network("${FirebaseAuth.instance.currentUser!.photoURL}"),
+            Text("${FirebaseAuth.instance.currentUser!.email}"),
+            Text("${FirebaseAuth.instance.currentUser!.displayName}")
           ],
         ),
       ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:productivity_app/Services/authentication.dart';
 import 'package:productivity_app/services/google_auth.dart';
 import 'package:productivity_app/src/forgot_password.dart';
 import 'package:productivity_app/src/homescreen.dart';
 import 'package:productivity_app/src/signup_screen.dart';
-
 import 'package:productivity_app/widgets/button.dart';
 import 'package:productivity_app/widgets/snackbar.dart';
 import 'package:productivity_app/widgets/text_field.dart';
@@ -14,27 +12,27 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
 
   @override
   void dispose() {
-    super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
-// email and passowrd auth part
+  // Email and password auth part
   void loginUser() async {
     setState(() {
       isLoading = true;
     });
-    // signup user using our authmethod
+    // Sign up user using our auth method
     String res = await AuthMethod().loginUser(
         email: emailController.text, password: passwordController.text);
 
@@ -42,7 +40,7 @@ class _SignupScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = false;
       });
-      //navigate to the home screen
+      // Navigate to the home screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomeScreen(),
@@ -52,7 +50,7 @@ class _SignupScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = false;
       });
-      // show error
+      // Show error
       showSnackBar(context, res);
     }
   }
@@ -61,195 +59,182 @@ class _SignupScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: height / 2.9,
-              child: Image.asset('assets/images/login.png'),
-            ),
-
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Login!',
-                style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(-1.8, -1.8),
-                      color: Colors.white,
-                      blurRadius: 5.0,
-                    ),
-                    Shadow(
-                      offset: Offset(1.8, 1.8),
-                      color: Colors.grey,
-                      blurRadius: 5.0,
-                    ),
-                  ],
-                ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: height / 2.9,
+                child: Image.asset('assets/images/login.png'),
               ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            TextFieldInput(
-                icon: Icons.person_2_outlined,
-                textEditingController: emailController,
-                hintText: 'Enter your email',
-                textInputType: TextInputType.text),
-            TextFieldInput(
-              icon: Icons.lock_outline_rounded,
-              textEditingController: passwordController,
-              hintText: 'Enter your passord',
-              textInputType: TextInputType.text,
-              isPass: true,
-            ),
-            //  we call our forgot password below the login in button
-            const ForgotPassword(),
-            MyButtons(onTap: loginUser, text: "Log In"),
-
-            Row(
-              children: [
-                Expanded(
-                  child: Container(height: 1, color: Colors.black26),
-                ),
-                const Text("  or  "),
-                Expanded(
-                  child: Container(height: 1, color: Colors.black26),
-                )
-              ],
-            ),
-            //for google login
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // color of shadow
-                      spreadRadius: 2, // spread radius
-                      blurRadius: 5, // blur radius
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets
-                        .zero, // Ensure padding is zero to match container size
-                  ),
-                  onPressed: () async {
-                    await FirebaseServices().signInWithGoogle();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Login!',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(-1.8, -1.8),
+                        color: Colors.white,
+                        blurRadius: 5.0,
                       ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize
-                        .min, // Ensures the button is sized according to the content
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 8),
-                        child: Image.network(
-                          "https://ouch-cdn2.icons8.com/VGHyfDgzIiyEwg3RIll1nYupfj653vnEPRLr0AeoJ8g/rs:fit:456:456/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvODg2/LzRjNzU2YThjLTQx/MjgtNGZlZS04MDNl/LTAwMTM0YzEwOTMy/Ny5wbmc.png",
-                          height: 35,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: const Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrange,
-                          ),
-                        ),
+                      Shadow(
+                        offset: Offset(1.8, 1.8),
+                        color: Colors.grey,
+                        blurRadius: 5.0,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-
-            // for phone authentication
-            //  const PhoneAuthentication(),
-            // Don't have an account? got to signup screen
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
+              SizedBox(height: 5),
+              TextFieldInput(
+                icon: Icons.person_2_outlined,
+                textEditingController: emailController,
+                hintText: 'Enter your email',
+                textInputType: TextInputType.text,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              TextFieldInput(
+                icon: Icons.lock_outline_rounded,
+                textEditingController: passwordController,
+                hintText: 'Enter your password',
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              const ForgotPassword(),
+              MyButtons(onTap: loginUser, text: "Log In"),
+              Row(
                 children: [
-                  const Text(
-                    "Don't have an account? ",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromARGB(255, 97, 97, 97),
-                        fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Container(height: 1, color: Colors.black26),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
+                  const Text("  or  "),
+                  Expanded(
+                    child: Container(height: 1, color: Colors.black26),
+                  ),
+                ],
+              ),
+              // Google login
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () async {
+                      await FirebaseServices().signInWithGoogle();
+                      Navigator.pushReplacement(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) => const SignupScreen(),
+                          builder: (context) => const HomeScreen(),
                         ),
                       );
                     },
-                    child: const Text(
-                      "SignUp",
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 8),
+                          child: Image.network(
+                            "https://ouch-cdn2.icons8.com/VGHyfDgzIiyEwg3RIll1nYupfj653vnEPRLr0AeoJ8g/rs:fit:456:456/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvODg2/LzRjNzU2YThjLTQx/MjgtNGZlZS04MDNl/LTAwMTM0YzEwOTMy/Ny5wbmc.png",
+                            height: 35,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: const Text(
+                            "Continue with Google",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.deepOrange,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account? ",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 97, 97, 97),
                         fontWeight: FontWeight.bold,
-                        color: Colors.deepOrange,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(-1.8, -1.8),
-                            color: Colors.white,
-                            blurRadius: 5.0,
-                          ),
-                          Shadow(
-                            offset: Offset(1.8, 1.8),
-                            color: Colors.grey,
-                            blurRadius: 5.0,
-                          ),
-                        ],
                       ),
                     ),
-                  )
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const SignupScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "SignUp",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepOrange,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(-1.8, -1.8),
+                              color: Colors.white,
+                              blurRadius: 5.0,
+                            ),
+                            Shadow(
+                              offset: Offset(1.8, 1.8),
+                              color: Colors.grey,
+                              blurRadius: 5.0,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 
   Container socialIcon(image) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 15,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
       decoration: BoxDecoration(
         color: const Color(0xFFedf0f8),
         borderRadius: BorderRadius.circular(12),
