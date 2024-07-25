@@ -6,11 +6,15 @@ import 'package:productivity_app/src/signin_screen.dart';
 import 'package:productivity_app/src/splash_screen.dart';
 import 'package:productivity_app/src/onboarding_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(DevicePreview(
+    enabled: true,
+    builder: (context) => const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,6 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: DevicePreview.appBuilder,
+      locale: DevicePreview.locale(context),
       theme: ThemeData(
         textTheme: GoogleFonts.crimsonTextTextTheme(
           Theme.of(context).textTheme,
